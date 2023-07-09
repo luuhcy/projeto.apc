@@ -1,2 +1,149 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+frase = input()
+
+#BUSCAR MODALIDADE
+vari = ["aluguel", "alugo", "alugar"] 
+
+modalidade = "Venda"     
+for new_word in vari:     
+    if new_word.lower() in frase.split():
+        modalidade = "Aluguel"
+        break
+
+print("Modalidade:", modalidade)
+
+#BUSCAR TIPO 
+vari2 = ["Casa","casa"]
+tipo = "Apartamento"
+
+for new_word2 in vari2:
+    if new_word2.lower() in frase.split():
+        tipo = "Casa"
+        break
+
+print("Tipo:", tipo)
+
+#BUSCAR ENDEREÇO
+address= ""
+think = False
+
+for word in frase.split():
+    if word == "Avenida" or word == "Rua":
+        think = True
+    
+    if think:
+        if word[:2].isnumeric():
+            address += word[:-1]
+            break
+            
+        elif not word.isdigit():
+            address += word + " "
+            
+print("Endereco:", address)
+
+
+#BUSCAR CEP E TELEFONE:
+#ERRO COM O TESTE Eu nao gostaria, mas estou endividado e preciso vender uma casa na Avenida Francisco Pereira Lopes, n. 7, no Cidade Jardim. A casa possui churrasqueira, piscina, 230 m2, 4 quartos, 1 suite, 3 vagas para carros, 1 sala e 1 quarto de servico. Tem um fusca velho guardado nos fundos, mas precisa quitar 20 parcelas vencidas do IPVA. O valor para venda eh 56234234 reais, mas faco desconto se quiser ficar com a minha sogra que soh sabe reclamar. Contato: 0000-0000. Falar com Illiarde Ubijara, tambem conhecido como jacare.
+
+phone = ""
+cont = 0
+var = False
+cep = "nao informado"
+word = frase.split()
+lista = []
+for g in word:
+    for l in g:
+        if var:
+            if l.isdigit() and (l!="." or l!= ","):
+                cont+= 1
+            else:
+                var = False
+                
+        elif l=="-":
+            var = True
+                
+    if cont == 4:
+        phone += g.replace(".", "").replace(",","") + " "
+        
+    elif cont == 3:
+        cep = g.replace(".", "").replace(",","") + " "
+
+       
+    cont = 0
+    var = False
+    
+    if phone!= "":
+        lista.append(phone)
+        phone = ""
+    
+print("CEP:",cep)
+
+#BUSCAR AREA
+#NECESSITO ARRUMAR ESTÁ DANDO ERRO
+area = "nao informado"
+
+words = frase.split()
+for i in range(len(words)):
+    if words[i].isdigit() and i > 0 and words[i-1] not in ["Rua", "Avenida"]:
+        area = words[i]
+        break
+
+print("Area:", area)
+
+
+# BUSCAR VALOR
+valor = ""
+
+word_plo = frase.split()
+
+for i in range(len(word_plo)):
+    word_final = word_plo[i]
+    if "R$" in word_final:
+        valor = word_final.replace("R$", "")
+    elif "reais" in word_final:
+        if i > 0:
+            valor = word_plo[i-1]
+
+if valor:
+    if valor[-1] == ',' or valor[-1] == '.':
+        valor = valor[:-1]
+    print("Valor:", valor)
+else:
+    print("Valor: nao informado")
+
+
+
+
+if len(lista) == 1:
+    print("Telefone:", lista[0])
+elif len(lista) > 1:
+    phones_str = ", ".join(lista).strip()
+    phones_str = phones_str.replace(" ,", ",")
+    print("Telefones: " + phones_str)
+
+
+#BUSCAR RESPONSÁVEL
+#ESTA DANDO ERRO FALTA ARRUMAR
+seq = frase.split('. ')
+seq_final = seq[-1]
+
+palavras = seq_final.split()
+
+people = ""
+cont = 0
+
+for palavra in palavras[::-1]:
+    if palavra[0].isupper():
+        cont += 1
+        people = palavra + " " + people
+    else:
+        if cont > 0:
+            break
+
+if people:
+    people = people.strip().rstrip(',').rstrip('.')
+    print("Responsavel:", people)
+
+
+
+
+
