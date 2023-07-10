@@ -1,26 +1,26 @@
 frase = input()
-
 #BUSCAR MODALIDADE
-vari = ["aluguel", "alugo", "alugar"] 
+vari = ["aluguel", "alugo", "alugar","aluguel.", "aluguel,", "alugo.","alugo,","alugar.", "alugar,"] 
 
 modalidade = "Venda"     
 for new_word in vari:     
-    if new_word.lower() in frase.split():
+    if new_word in frase.lower().split():
         modalidade = "Aluguel"
         break
 
 print("Modalidade:", modalidade)
 
 #BUSCAR TIPO 
-vari2 = ["Casa","casa"]
+vari2 = ["Casa","casa","casa.","casa,"]
 tipo = "Apartamento"
 
 for new_word2 in vari2:
-    if new_word2.lower() in frase.split():
+    if new_word2 in frase.lower().split():
         tipo = "Casa"
         break
 
 print("Tipo:", tipo)
+
 
 #BUSCAR ENDEREÇO
 address= ""
@@ -78,14 +78,16 @@ for g in word:
 print("CEP:",cep)
 
 #BUSCAR AREA
-#NECESSITO ARRUMAR ESTÁ DANDO ERRO
 area = "nao informado"
 
 words = frase.split()
 for i in range(len(words)):
-    if words[i].isdigit() and i > 0 and words[i-1] not in ["Rua", "Avenida"]:
-        area = words[i]
-        break
+    if words[i].isdigit():
+        if i < len(words) - 1:
+            next_word = words[i+1].lower()
+            if "m2" in next_word or "metros" in next_word or "metros quadrados" in next_word:
+                area = words[i]
+                break
 
 print("Area:", area)
 
@@ -122,7 +124,6 @@ elif len(lista) > 1:
 
 
 #BUSCAR RESPONSÁVEL
-#ESTA DANDO ERRO FALTA ARRUMAR
 seq = frase.split('. ')
 seq_final = seq[-1]
 
