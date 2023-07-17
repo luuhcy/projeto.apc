@@ -21,29 +21,32 @@ for new_word2 in vari2:
 
 print("Tipo:", tipo)
 
-
 #BUSCAR ENDEREÇO
-address= ""
+address = ""
 think = False
 
 for word in frase.split():
     if word == "Avenida" or word == "Rua":
         think = True
-    
+
     if think:
-        if word[:2].isnumeric():
-            address += word[:-1]
+        if word[0].isdigit():
+            if word[::-1][0] == "," or word[::-1][0] == ".":
+                word = word[:-1]
+            if address:
+                address += " " + word
+            else:
+                address += word
+            think = False
             break
-            
-        elif not word.isdigit():
-            address += word + " "
-            
+        if address:
+            address += " " + word
+        else:
+            address += word
+
 print("Endereco:", address)
 
-
 #BUSCAR CEP E TELEFONE:
-#ERRO COM O TESTE Eu nao gostaria, mas estou endividado e preciso vender uma casa na Avenida Francisco Pereira Lopes, n. 7, no Cidade Jardim. A casa possui churrasqueira, piscina, 230 m2, 4 quartos, 1 suite, 3 vagas para carros, 1 sala e 1 quarto de servico. Tem um fusca velho guardado nos fundos, mas precisa quitar 20 parcelas vencidas do IPVA. O valor para venda eh 56234234 reais, mas faco desconto se quiser ficar com a minha sogra que soh sabe reclamar. Contato: 0000-0000. Falar com Illiarde Ubijara, tambem conhecido como jacare.
-
 phone = ""
 cont = 0
 var = False
@@ -91,7 +94,6 @@ for i in range(len(words)):
 
 print("Area:", area)
 
-
 # BUSCAR VALOR
 valor = ""
 
@@ -113,8 +115,6 @@ else:
     print("Valor: nao informado")
 
 
-
-
 if len(lista) == 1:
     print("Telefone:", lista[0])
 elif len(lista) > 1:
@@ -125,26 +125,24 @@ elif len(lista) > 1:
 
 #BUSCAR RESPONSÁVEL
 seq = frase.split('. ')
-seq_final = seq[-1]
-
+i = 0
+seq_final = seq[::-1][i]
+while seq[::-1][i] == '':
+    i +=1
+    seq_final = seq[::-1][i]
 palavras = seq_final.split()
 
 people = ""
-cont = 0
-
+flag = False
 for palavra in palavras[::-1]:
     if palavra[0].isupper():
-        cont += 1
+        flag = True
         people = palavra + " " + people
     else:
-        if cont > 0:
+        if flag == True:
             break
 
-if people:
-    people = people.strip().rstrip(',').rstrip('.')
-    print("Responsavel:", people)
-
-
-
+people = people.strip().rstrip(',').rstrip('.')
+print("Responsavel:",people)
 
 
